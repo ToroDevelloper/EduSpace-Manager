@@ -29,23 +29,28 @@ export class ReservaService {
       where: { id },
       relations: ['docente', 'docente.facultad', 'espacio', 'recursos'],
     });
+
     if (!reserva) {
       throw new NotFoundException(`Reserva con id ${id} no encontrada`);
     }
     return reserva;
   }
 
-  async create(dto: CreateReservaDto): Promise<Reserva> {
-    // Validar capacidad máxima del espacio
-    const espacio = await this.espacioRepository.findOne({ where: { id: dto.espacioId } });
+  private async validarCapacidad(espacioId: number, cantidadPersonas: number) {
+    const espacio = await this.espacioRepository.findOne({ where: { id: espacioId } });
     if (!espacio) {
-      throw new NotFoundException(`Espacio con id ${dto.espacioId} no encontrado`);
+      throw new NotFoundException(`Espacio con id ${espacioId} no encontrado`);
     }
-    if (dto.cantidadPersonas > espacio.capacidadMaxima) {
+    if (cantidadPersonas > espacio.capacidadMaxima) {
       throw new BadRequestException(
-        `La cantidad de personas (${dto.cantidadPersonas}) supera la capacidad máxima del espacio (${espacio.capacidadMaxima})`,
+        `La cantidad de personas (${cantidadPersonas}) supera la capacidad máxima del espacio (${espacio.capacidadMaxima})`,
       );
     }
+    return espacio;
+  }
+
+  async create(dto: CreateReservaDto): Promise<Reserva> {
+    await this.validarCapacidad(dto.espacioId, dto.cantidadPersonas);
 
     const reserva = this.reservaRepository.create({
       fecha: dto.fecha,
@@ -58,7 +63,6 @@ export class ReservaService {
 
     const savedReserva = await this.reservaRepository.save(reserva);
 
-    // Crear recursos adicionales si se enviaron
     if (dto.recursos && dto.recursos.length > 0) {
       const recursos = dto.recursos.map((nombre) =>
         this.recursoRepository.create({ nombre, reservaId: savedReserva.id }),
@@ -72,21 +76,11 @@ export class ReservaService {
   async update(id: number, dto: UpdateReservaDto): Promise<Reserva> {
     const reserva = await this.findOne(id);
 
-    // Si cambia espacioId o cantidadPersonas, validar capacidad
     const espacioId = dto.espacioId ?? reserva.espacioId;
     const cantidad = dto.cantidadPersonas ?? reserva.cantidadPersonas;
 
-    const espacio = await this.espacioRepository.findOne({ where: { id: espacioId } });
-    if (!espacio) {
-      throw new NotFoundException(`Espacio con id ${espacioId} no encontrado`);
-    }
-    if (cantidad > espacio.capacidadMaxima) {
-      throw new BadRequestException(
-        `La cantidad de personas (${cantidad}) supera la capacidad máxima del espacio (${espacio.capacidadMaxima})`,
-      );
-    }
+    await this.validarCapacidad(espacioId, cantidad);
 
-    // Actualizar campos básicos
     Object.assign(reserva, {
       fecha: dto.fecha ?? reserva.fecha,
       horaInicio: dto.horaInicio ?? reserva.horaInicio,
@@ -97,7 +91,6 @@ export class ReservaService {
     });
     await this.reservaRepository.save(reserva);
 
-    // Si se envían recursos, reemplazar los existentes
     if (dto.recursos) {
       await this.recursoRepository.delete({ reservaId: id });
       if (dto.recursos.length > 0) {
