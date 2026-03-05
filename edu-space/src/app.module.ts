@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { FacultadModule } from './modules/facultad/facultad.module';
 import { DocenteModule } from './modules/docente/docente.module';
 import { EspacioModule } from './modules/espacio/espacio.module';
+import { ReservaModule } from './modules/reserva/reserva.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { EspacioModule } from './modules/espacio/espacio.module';
     FacultadModule,
     DocenteModule,
     EspacioModule,
+    ReservaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
