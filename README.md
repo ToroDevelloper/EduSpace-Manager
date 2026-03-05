@@ -1,1 +1,0 @@
-# EduSpace-Manager
