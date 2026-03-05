@@ -27,7 +27,7 @@ export class FacultadService {
       relations: ['espacios', 'docentes'],
     });
     if (!fac) {
-      throw new NotFoundException('Facultad not found');
+      throw new NotFoundException('Facultad no encontrada');
     }
     return fac;
   }
@@ -38,8 +38,8 @@ export class FacultadService {
     return this.facultadRepo.save(fac);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const fac = await this.findOne(id);
-    await this.facultadRepo.remove(fac);
+    await this.facultadRepo.delete(fac);
   }
 }

@@ -20,7 +20,7 @@ export class DocenteService {
       where: { id: dto.facultadId },
     });
     if (!facultad) {
-      throw new NotFoundException('Facultad not found');
+      throw new NotFoundException('Facultad no encontrada');
     }
     const docente = this.docenteRepo.create({
       nombre: dto.nombre,
@@ -40,7 +40,7 @@ export class DocenteService {
       relations: ['facultad'],
     });
     if (!docente) {
-      throw new NotFoundException('Docente not found');
+      throw new NotFoundException('Docente no encontrado');
     }
     return docente;
   }
@@ -52,7 +52,7 @@ export class DocenteService {
         where: { id: dto.facultadId },
       });
       if (!facultad) {
-        throw new NotFoundException('Facultad not found');
+        throw new NotFoundException('Facultad no encontrada');
       }
       docente.facultad = facultad;
     }
@@ -60,8 +60,8 @@ export class DocenteService {
     return this.docenteRepo.save(docente);
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: number): Promise<void> {
     const docente = await this.findOne(id);
-    await this.docenteRepo.remove(docente);
+    await this.docenteRepo.delete(docente);
   }
 }
