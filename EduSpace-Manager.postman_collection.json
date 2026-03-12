@@ -1,0 +1,245 @@
+{
+  "info": {
+    "name": "EduSpace Manager",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Facultad",
+      "item": [
+        {
+          "name": "Obtener todas las facultades",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/facultad"
+          }
+        },
+        {
+          "name": "Obtener facultad por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/facultad/1"
+          }
+        },
+        {
+          "name": "Crear facultad",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/facultad",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Facultad de Ingeniería\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar facultad",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/facultad/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Facultad de Diseño\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar facultad",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/facultad/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Docente",
+      "item": [
+        {
+          "name": "Obtener todos los docentes",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/docente"
+          }
+        },
+        {
+          "name": "Obtener docente por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/docente/1"
+          }
+        },
+        {
+          "name": "Crear docente",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/docente",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos Pérez\",\n  \"email\": \"carlos.perez@universidad.edu\",\n  \"facultadId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar docente",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/docente/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Carlos Pérez Actualizado\",\n  \"email\": \"nuevo@universidad.edu\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar docente",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/docente/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Espacio",
+      "item": [
+        {
+          "name": "Obtener todos los espacios",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/espacios"
+          }
+        },
+        {
+          "name": "Obtener espacio por ID",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/espacios/1"
+          }
+        },
+        {
+          "name": "Crear espacio",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/espacios",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Laboratorio A-101\",\n  \"tipo\": \"Laboratorio\",\n  \"capacidadMaxima\": 30,\n  \"facultadId\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar espacio",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/espacios/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Laboratorio A-101 Actualizado\",\n  \"capacidadMaxima\": 40\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar espacio",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/espacios/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reserva",
+      "item": [
+        {
+          "name": "Obtener todas las reservas",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reservas"
+          }
+        },
+        {
+          "name": "Obtener reserva por ID (detalle completo)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/reservas/1"
+          }
+        },
+        {
+          "name": "Crear reserva",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/reservas",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-03-10\",\n  \"horaInicio\": \"08:00\",\n  \"horaFin\": \"10:00\",\n  \"cantidadPersonas\": 25,\n  \"docenteId\": 1,\n  \"espacioId\": 1,\n  \"recursos\": [\"Proyector\", \"Sistema de Sonido\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Crear reserva (excede capacidad - debe fallar)",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/reservas",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fecha\": \"2026-03-10\",\n  \"horaInicio\": \"10:00\",\n  \"horaFin\": \"12:00\",\n  \"cantidadPersonas\": 999,\n  \"docenteId\": 1,\n  \"espacioId\": 1,\n  \"recursos\": []\n}"
+            }
+          }
+        },
+        {
+          "name": "Actualizar reserva",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/reservas/1",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"horaInicio\": \"09:00\",\n  \"horaFin\": \"11:00\",\n  \"cantidadPersonas\": 20,\n  \"recursos\": [\"Proyector\", \"Computadores Portátiles\"]\n}"
+            }
+          }
+        },
+        {
+          "name": "Eliminar reserva",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/reservas/1"
+          }
+        }
+      ]
+    }
+  ]
+}
